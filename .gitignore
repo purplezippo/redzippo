@@ -35,7 +35,5 @@ vignettes/*.pdf
 # Shiny token, see https://shiny.rstudio.com/articles/shinyapps.html
 rsconnect/
 
-.Ruserdata
-static/figures
-blogdown
+
 
