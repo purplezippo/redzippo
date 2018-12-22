@@ -1,6 +1,14 @@
 ---
 title: "About"
-date: "2016-05-05T21:48:51-07:00"
+date: "2018-12-22"
 ---
+### 签名
+生命不休，追梦不止。
+修神雨中，心系辰下。
+不坠凡尘，不慕仙人。
+愿携风雨，共度佳期。
 
-This is a "hello world" example website for the [**blogdown**](https://github.com/rstudio/blogdown) package. The theme was forked from [@jrutheiser/hugo-lithium-theme](https://github.com/jrutheiser/hugo-lithium-theme) and modified by [Yihui Xie](https://github.com/yihui/hugo-lithium).
+### 资料
+个人博客，以及一些旧文~
+[**csdn**](https://blog.csdn.net/arcers)。
+

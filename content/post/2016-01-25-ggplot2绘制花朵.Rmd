@@ -1,0 +1,449 @@
+---
+title: ggplot2绘制花朵
+author: 雨禾
+date: '2016-01-25'
+slug: ggplot2绘制花朵
+categories:
+  - R
+tags:
+  - plot
+---
+
+闲暇时刻的小乐趣，只为自娱。
+
+# 1.基础绘图
+
+## 1.1数据
+```{r}
+# lambda尺度参数，sin函数放射线
+sin.gen <- function(lambda, ang, ang.seg = 100, parts = 1) {
+  # 每一个点对应的角度
+  trans.theta <- seq(-ang / 2, ang / 2, pi / ang.seg)
+  # 每个悬臂之间的角度，旋转角度
+  parts.theta <- seq(0, pi, pi / parts)
+
+  sin.x <- lambda * trans.theta
+  sin.y <- lambda * sin(trans.theta)
+  # 曲线上每一点到原点的距离
+  r <- sqrt(sin.x^2 + sin.y^2)
+  # 初始夹角
+  start.theta <- sign(sin(trans.theta)) * acos(sin.x / r)
+
+  if (parts > 1) {
+    for (i in 2:parts) {
+      sin.x <- c(sin.x, r * cos(parts.theta[i] + start.theta))
+      sin.y <- c(sin.y, r * sin(parts.theta[i] + start.theta))
+    }
+  }
+
+  return(data.frame(sin.x, sin.y))
+}
+test.sin <- sin.gen(lambda = 30, ang = 10 * pi, ang.seg = 100, parts = 8)
+```
+
+## 1.2第一朵小花
+```{r}
+library(ggplot2)
+
+ggplot(data = test.sin) +
+  geom_point(aes(x = sin.x, y = sin.y),
+    shape = 21, col = "red",
+    size = 45, alpha = .04
+  ) +
+  theme_void() +
+  scale_x_continuous("", limits = c(-620, 620)) +
+  scale_y_continuous("", limits = c(-620, 620)) +
+  coord_fixed()
+```
+
+# 2.各种花
+## 2.1花矩阵
+主函数
+```{r}
+# （cx,cy），花心的位置
+sin1.gen <- function(lambda, cx = 0, cy = 0, ang, ang.seg = 100, parts = 1, type = 1) {
+  # 每一个点对应的角度
+  trans.theta <- seq(-ang / 2, ang / 2, pi / ang.seg)
+  # 每个悬臂之间的角度，旋转角度
+  parts.theta <- seq(0, pi, pi / parts)
+  sin.x <- lambda * trans.theta
+  sin.y <- lambda * sin(trans.theta)
+  # 曲线上每一点到原点的距离
+  r <- sqrt(sin.x^2 + sin.y^2)
+  # 初始夹角
+  start.theta <- sign(sin(trans.theta)) * acos((sin.x) / r)
+  if (parts > 1) {
+    for (i in 2:parts) {
+      sin.x <- c(sin.x, r * cos(parts.theta[i] + start.theta))
+      sin.y <- c(sin.y, r * sin(parts.theta[i] + start.theta))
+    }
+  }
+  sin.x <- sin.x + cx
+  sin.y <- sin.y + cy
+  type <- rep(type, length(sin.x))
+  return(data.frame(sin.x, sin.y, type))
+}
+```
+
+数据生成
+```{r}
+params <- data.frame(
+  "lambda" = c(
+    30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
+    25, 25, 25, 25, 30, 22, 22, 22, 22, 30
+  ),
+  "cx" = c(
+    -600, -300, 0, 300, 600, -600, -300, 0, 300, 600,
+    -600, -300, 0, 300, 600, -600, -300, 0, 300, 600
+  ),
+  "cy" = rep(c(450, 150, -150, -500), each = 5),
+  "ang" = rep(1:4, each = 5) * pi,
+  "ang.seg" = 50,
+  "parts" = rep(3:7, 4),
+  "type" = rep(1:4, each = 5)
+)
+
+test.sin <- NULL
+for (i in 1:nrow(params)) {
+  temp <- as.vector(params[i, ])
+  res <- sin1.gen(
+    lambda = temp$lambda, cx = temp$cx, cy = temp$cy, ang = temp$ang,
+    ang.seg = temp$ang.seg, parts = temp$parts, type = temp$type
+  )
+  test.sin <- rbind(test.sin, res)
+}
+
+```
+
+绘图
+```{r message=FALSE, warning=FALSE}
+ggplot(data = test.sin) +
+  geom_point(aes(x = sin.x, y = sin.y, col = factor(type)),
+    shape = 21, 
+    size = 15, alpha = .1
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    legend.position = 'none',
+    panel.background = element_rect(fill = "beige"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  ) +
+  scale_x_continuous(limits = c(-800, 800)) +
+  scale_y_continuous(limits = c(-700, 600)) +
+  coord_fixed()
+```
+
+
+## 2.2浮游生物
+数据生成
+```{r}
+test.sin <- NULL
+for (i in 1:36) {
+  test.sin <- rbind(
+    test.sin,
+    sin1.gen(
+      lambda = round(runif(1, 5, 20)), cx = round(runif(1, -760, 760)), 
+      cy = round(runif(1, -650, 560)), ang = runif(1, 1, 4) * pi,
+      ang.seg = 30, parts = round(runif(1, 3, 8)), type = round(runif(1, 1, 7))
+    )
+  )
+}
+
+
+```
+绘图
+```{r}
+ggplot(data = test.sin) +
+  geom_point(aes(x = sin.x, y = sin.y, col = factor(type)),
+    shape = 21,
+    size = 2, alpha = .05
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    legend.position = "none",
+    panel.background = element_rect(fill = "floralwhite"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank()
+  ) +
+  scale_x_continuous(limits = c(-800, 800)) +
+  scale_y_continuous(limits = c(-700, 600)) +
+  coord_fixed()
+```
+
+## 2.3浮游生物——加点海浪
+
+数据生成
+```{r}
+# 浮游生物
+test.sin <- NULL
+for (i in 1:36) {
+  test.sin <- rbind(
+    test.sin,
+    sin1.gen(
+      lambda = round(runif(1, 5, 20)), cx = round(runif(1, -950, 950)), 
+      cy = round(runif(1, -550, 550)), ang = runif(1, 1, 4) * pi,
+      ang.seg = 30, parts = round(runif(1, 3, 8)), type = round(runif(1, 1, 7))
+    )
+  )
+}
+# 浪花
+test.langhua <- NULL
+for (i in 1:7) {
+  test.langhua <- rbind(
+    test.langhua,
+    sin1.gen(
+      lambda = 60, cx = 0, cy = -600 + 150 * i, ang = 10 * pi, 
+      ang.seg = 10, parts = 1
+      )
+  )
+}
+
+# 螺旋
+luoxuan.gen <- function(r.rate = 1, ang.seg = 100, ang.full = 4 * pi, move.dir = 0) {
+  trans.theta <- seq(0, ang.full, pi / ang.seg)
+  trans.r <- r.rate * trans.theta
+  circle.x <- trans.r * cos(trans.theta)
+  circle.y <- trans.r * sin(trans.theta)
+  return(data.frame(circle.x, circle.y))
+}
+test.lx <- luoxuan.gen(r.rate = 25, ang.seg = 100, ang.full = 16 * pi)
+
+```
+绘图
+```{r message=FALSE, warning=FALSE}
+ggplot() +
+  geom_point(
+    data = test.langhua, aes(x = sin.x, y = sin.y), col = "grey",
+    size = 10, alpha = .1
+  ) +
+  geom_point(
+    data = test.sin, aes(x = sin.x, y = sin.y, col = factor(type)), shape = 21,
+    size = 3, alpha = .05
+  ) +
+  theme(
+    legend.position = "none",
+    panel.background = element_rect(fill = "mistyrose"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text = element_blank()
+  ) +
+  scale_x_continuous('', limits = c(-1000, 1000)) +
+  scale_y_continuous('', limits = c(-600, 600)) +
+  coord_fixed()
+```
+
+
+## 2.4星空
+数据生成
+```{r}
+test.sin <- NULL
+set.seed(1234)
+for (i in 1:45) {
+  test.sin <- rbind(
+    test.sin,
+    sin1.gen(
+      lambda = round(runif(1, 10, 20)), cx = round(runif(1, -1190, 1190)), 
+      cy = round(runif(1, -650, 560)), ang = runif(1, 1.5, 3.5) * pi,
+      ang.seg = 30, parts = round(runif(1, 3, 8)), type = round(runif(1, 1, 7))
+    )
+  )
+}
+
+```
+绘图
+```{r}
+ggplot(data = test.sin) +
+  geom_point(aes(x = sin.x, y = sin.y),
+    col = "white", shape = 21,
+    size = 7, alpha = .05
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    legend.position = "none",
+    panel.background = element_rect(fill = "black"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank()
+  ) +
+  scale_x_continuous(name = "", limits = c(-1200, 1200)) +
+  scale_y_continuous(name = "", limits = c(-700, 600)) +
+  coord_fixed()
+```
+
+
+## 2.4蒲公英
+数据生成
+```{r}
+# 曲线，起点（cx,cy）,终点（ex,ey）,曲线类型,分割精度
+line.gen <- function(cx = 0, cy = 0, ex = 1, ey = 1, line.seg = 50, type = 1) {
+  a <- (cy - ey) / (cx - ex)
+  b <- cy - cx * a
+  pointx <- seq(cx, ex, length.out = line.seg)
+  pointy <- a * pointx + b
+  type <- rep(type, length(pointx))
+  return(data.frame(pointx, pointy, type))
+}
+
+test.sin <- NULL
+test.line <- NULL
+set.seed(12134)
+for (i in 1:10) {
+  cx.temp <- round(runif(1, -1090, 1090))
+  cy.temp <- round(runif(1, -150, 560))
+  test.sin <- rbind(
+    test.sin,
+    sin1.gen(
+      lambda = round(runif(1, 10, 25)), 
+      cx = cx.temp, cy = cy.temp,
+      ang = runif(1, 1.5, 3.5) * pi,
+      ang.seg = 40, 
+      parts = round(runif(1, 3, 8)), 
+      type = round(runif(1, 1, 7))
+    )
+  )
+  test.line <- rbind(
+    test.line,
+    line.gen(
+      cx = cx.temp, cy = cy.temp,
+      ex = runif(1, cx.temp - 100, cx.temp + 100), 
+      ey = runif(1, cy.temp - 200, cy.temp - 150),
+      line.seg = 100
+    )
+  )
+}
+
+bigflower <- sin1.gen(lambda = 40, cx = -700, cy = -300, ang = 6 * pi, ang.seg = 100, parts = 8)
+```
+
+绘图
+```{r message=FALSE, warning=FALSE}
+ggplot() +
+  # 花柄
+  geom_point(
+    data = test.line, aes(x = pointx, y = pointy), col = "white", shape = 19,
+    size = 2, alpha = .1
+  ) +
+  # 小花
+  geom_point(
+    data = test.sin, aes(x = sin.x, y = sin.y), col = "white", shape = 21,
+    size = 7, alpha = .05
+  ) +
+  # 大花
+  geom_point(
+    data = bigflower, aes(x = sin.x, y = sin.y), col = "white", shape = 21,
+    size = 45, alpha = .05
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    legend.position = "none",
+    panel.background = element_rect(fill = "black"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank()
+  ) +
+  scale_x_continuous(name = "", limits = c(-1100, 1100)) +
+  scale_y_continuous(name = "", limits = c(-700, 600)) +
+  coord_fixed()
+```
+
+
+2.5蒲公英卡片
+数据生成
+```{r}
+test.sin <- NULL
+test.line <- NULL
+set.seed(12134)
+for (i in 1:11) {
+  cx.temp <- round(runif(1, -1090, 1090))
+  cy.temp <- round(runif(1, -150, 560))
+  test.sin <- rbind(
+    test.sin,
+    sin1.gen(
+      lambda = round(runif(1, 10, 25)), cx = cx.temp, cy = cy.temp, 
+      ang = runif(1, 1.5, 3.5) * pi,
+      ang.seg = 40, 
+      parts = round(runif(1, 3, 8)),
+      type = round(runif(1, 1, 7))
+    )
+  )
+  test.line <- rbind(
+    test.line,
+    line.gen(
+      cx = cx.temp, cy = cy.temp,
+      ex = runif(1, cx.temp - 100, cx.temp + 100), 
+      ey = runif(1, cy.temp - 200, cy.temp - 150),
+      line.seg = 100
+    )
+  )
+}
+
+bigflower <- sin1.gen(lambda = 32, cx = -620, cy = -240, ang = 6 * pi, ang.seg = 90, parts = 8)
+bigflower.line <- line.gen(cx = -620, cy = -240, ex = -850, ey = -700, line.seg = 200)
+
+# 螺旋
+luoxuan.gen <- function(r.rate = 1, ang.seg = 100, ang.full = 4 * pi, move.dir = 0) {
+  trans.theta <- seq(0, ang.full, pi / ang.seg)
+  trans.r <- r.rate * trans.theta
+  circle.x <- trans.r * cos(trans.theta)
+  circle.y <- trans.r * sin(trans.theta)
+  return(data.frame(circle.x, circle.y))
+}
+
+test.lx <- luoxuan.gen(r.rate = 25, ang.seg = 110, ang.full = 16 * pi)
+```
+绘图
+```{r message=FALSE, warning=FALSE}
+ggplot() +
+  # 螺旋
+  geom_point(
+    data = test.lx, aes(x = circle.x, y = circle.y), shape = 21, col = "grey",
+    size = 20, alpha = .15
+  ) +
+  # 小花花柄
+  geom_point(
+    data = test.line, aes(x = pointx, y = pointy), col = "white", shape = 19,
+    size = 2, alpha = .1
+  ) +
+  # 小花
+  geom_point(
+    data = test.sin, aes(x = sin.x, y = sin.y), col = "white", shape = 21,
+    size = 7, alpha = .05
+  ) +
+  # 大花花柄
+  geom_point(
+    data = bigflower.line, aes(x = pointx, y = pointy), col = "white", shape = 19,
+    size = 5, alpha = .1
+  ) +
+  # 大花
+  geom_point(
+    data = bigflower, aes(x = sin.x, y = sin.y), col = "white", shape = 21,
+    size = 45, alpha = .05
+  ) +
+  annotate("text", x = 950, y = -680, 
+           label = "<U+00A9>雨禾", col = "white", alpha = .8, 
+           size = 4, fontface = "bold"
+           ) +
+  annotate("text", x = 650, y = -500,
+           label = "悠悠的岁月，一杯酒\n旋转的轮回，几时休", 
+           col = "white", alpha = .8, size = 8, fontface = "bold"
+           ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    legend.position = "none",
+    panel.background = element_rect(fill = "sienna4"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank()
+  ) +
+  scale_x_continuous(name = "", limits = c(-1000, 1100)) +
+  scale_y_continuous(name = "", limits = c(-700, 600)) +
+  coord_fixed()
+```
+
+

@@ -36,7 +36,8 @@ vignettes/*.pdf
 rsconnect/
 
 .Ruserdata
-public
+/public/
 static/figures
 blogdown
 
+.Rproj.user
