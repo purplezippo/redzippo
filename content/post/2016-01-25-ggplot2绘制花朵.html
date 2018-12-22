@@ -118,14 +118,13 @@ for (i in 1:nrow(params)) {
     size = 15, alpha = .1
   ) +
   theme(
-    text = element_text(size = 16, face = &quot;bold&quot;),
     legend.position = &#39;none&#39;,
     panel.background = element_rect(fill = &quot;beige&quot;),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank()
   ) +
-  scale_x_continuous(limits = c(-800, 800)) +
-  scale_y_continuous(limits = c(-700, 600)) +
+  scale_x_continuous(&#39;&#39;, limits = c(-800, 800)) +
+  scale_y_continuous(&#39;&#39;, limits = c(-700, 600)) +
   coord_fixed()</code></pre>
 <p><img src="/post/2016-01-25-ggplot2绘制花朵_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
@@ -150,7 +149,6 @@ for (i in 1:36) {
     size = 2, alpha = .05
   ) +
   theme(
-    text = element_text(size = 16, face = &quot;bold&quot;),
     legend.position = &quot;none&quot;,
     panel.background = element_rect(fill = &quot;floralwhite&quot;),
     panel.grid.major = element_blank(),
@@ -158,10 +156,9 @@ for (i in 1:36) {
     axis.text.x = element_blank(),
     axis.text.y = element_blank()
   ) +
-  scale_x_continuous(limits = c(-800, 800)) +
-  scale_y_continuous(limits = c(-700, 600)) +
+  scale_x_continuous(&#39;&#39;, limits = c(-800, 800)) +
+  scale_y_continuous(&#39;&#39;, limits = c(-700, 600)) +
   coord_fixed()</code></pre>
-<pre><code>## Warning: Removed 20 rows containing missing values (geom_point).</code></pre>
 <p><img src="/post/2016-01-25-ggplot2绘制花朵_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div class="section level2">
@@ -255,7 +252,6 @@ for (i in 1:45) {
   scale_x_continuous(name = &quot;&quot;, limits = c(-1200, 1200)) +
   scale_y_continuous(name = &quot;&quot;, limits = c(-700, 600)) +
   coord_fixed()</code></pre>
-<pre><code>## Warning: Removed 42 rows containing missing values (geom_point).</code></pre>
 <p><img src="/post/2016-01-25-ggplot2绘制花朵_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
 <div class="section level2">

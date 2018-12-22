@@ -123,14 +123,13 @@ ggplot(data = test.sin) +
     size = 15, alpha = .1
   ) +
   theme(
-    text = element_text(size = 16, face = "bold"),
     legend.position = 'none',
     panel.background = element_rect(fill = "beige"),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank()
   ) +
-  scale_x_continuous(limits = c(-800, 800)) +
-  scale_y_continuous(limits = c(-700, 600)) +
+  scale_x_continuous('', limits = c(-800, 800)) +
+  scale_y_continuous('', limits = c(-700, 600)) +
   coord_fixed()
 ```
 
@@ -160,7 +159,6 @@ ggplot(data = test.sin) +
     size = 2, alpha = .05
   ) +
   theme(
-    text = element_text(size = 16, face = "bold"),
     legend.position = "none",
     panel.background = element_rect(fill = "floralwhite"),
     panel.grid.major = element_blank(),
@@ -168,8 +166,8 @@ ggplot(data = test.sin) +
     axis.text.x = element_blank(),
     axis.text.y = element_blank()
   ) +
-  scale_x_continuous(limits = c(-800, 800)) +
-  scale_y_continuous(limits = c(-700, 600)) +
+  scale_x_continuous('', limits = c(-800, 800)) +
+  scale_y_continuous('', limits = c(-700, 600)) +
   coord_fixed()
 ```
 
@@ -254,7 +252,7 @@ for (i in 1:45) {
 
 ```
 绘图
-```{r}
+```{r message=FALSE, warning=FALSE}
 ggplot(data = test.sin) +
   geom_point(aes(x = sin.x, y = sin.y),
     col = "white", shape = 21,
