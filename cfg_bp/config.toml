@@ -1,9 +1,9 @@
 baseurl = "/"
 languageCode = "zh-CN"
 title = "雨禾"
-theme = "maupassant"
+theme = "hugo-pacman-theme"
 googleAnalytics = ""
-disqusShortname = "purplezippo"
+disqusShortname = ""
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [permalinks]
