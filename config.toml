@@ -25,6 +25,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 
 [params]
+    busuanzi = true
     description = "A website built through Hugo and blogdown."
 
     # options for highlight.js (version, additional languages, and theme)
