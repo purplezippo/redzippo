@@ -1,5 +1,5 @@
 baseurl = "/"
-languageCode = "zh-CN"
+languageCode = "zh-cn"
 title = "雨禾"
 theme = "maupassant"
 googleAnalytics = ""
