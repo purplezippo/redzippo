@@ -3,7 +3,7 @@ languageCode = "zh-cn"
 title = "雨禾"
 theme = "maupassant"
 googleAnalytics = ""
-disqusShortname = "purplezippo"
+disqusShortname = "arcdata-netlify"
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [permalinks]
