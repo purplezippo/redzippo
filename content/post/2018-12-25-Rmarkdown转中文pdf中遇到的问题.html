@@ -65,7 +65,11 @@ Type  H &lt;return&gt;  for immediate help.
 </div>
 <div class="section level2">
 <h2>3.绘图乱码</h2>
-<p>文字解决了但是事儿没完，这是关于编码的第二个坑，就像下面这样，用ggplot2生成的图片中的中文字符全部变成了‘…’的形式。 <img src="figure/2018-12-25-Rmd2pdf/figure1.png" alt="figure1" /></p>
+<p>文字解决了但是事儿没完，这是关于编码的第二个坑，就像下面这样，用ggplot2生成的图片中的中文字符全部变成了‘…’的形式。</p>
+<p>
+<img src="/post/2018-12-25-Rmarkdown转中文pdf中遇到的问题_files/figure-html/figure1.png" width="672" />
+</p>
+<!-- ![figure1](figure/2018-12-25-Rmd2pdf/figure1.png) -->
 <p>怀疑过字体问题、tex设置问题、操作系统以及人生。。。最终通过仔细查阅官方文档以及stackoverflow最终发现图形设备需要额外指定，方式为在头文件中加入如下’dev’的配置，当然也可以设置为其它的图形设备。</p>
 <pre class="r"><code>output:
   pdf_document:
@@ -73,10 +77,10 @@ Type  H &lt;return&gt;  for immediate help.
       dev: cairo_pdf
       includes:
         in_header: head.tex</code></pre>
-<div class="figure">
-<img src="figure/2018-12-25-Rmd2pdf/figure2.png" />
-
-</div>
+<p>
+<img src="/post/2018-12-25-Rmarkdown转中文pdf中遇到的问题_files/figure-html/figure2.png" width="672" />
+</p>
+<!-- ![](figure/2018-12-25-Rmd2pdf/figure2.png) -->
 <p>其中图形设备可以替换为下列中的任何一个：bmp, postscript, pdf, png, svg, jpeg, pictex, tiff, win.metafile, cairo_pdf, cairo_ps, CairoJPEG, CairoPNG, CairoPS, CairoPDF, CairoSVG, CairoTIFF, Cairo_pdf, Cairo_png, Cairo_ps, Cairo_svg, tikz and a series of quartz devices including quartz_pdf, quartz_png, quartz_jpeg, quartz_tiff, quartz_gif, quartz_psd, quartz_bmp。 过这个坑花了不少时间，然而这并不是结束。当然图片乱码的问题除此之外也可以使用showtext解决。</p>
 <blockquote>
 <p>参考链接： 问题：<a href="https://github.com/yihui/knitr/issues/889" class="uri">https://github.com/yihui/knitr/issues/889</a> 文档：<a href="https://yihui.name/knitr/demo/graphics/" class="uri">https://yihui.name/knitr/demo/graphics/</a> 文档：<a href="https://yihui.name/knitr/options/#plots" class="uri">https://yihui.name/knitr/options/#plots</a> <a href="https://blog.csdn.net/u012111465/article/details/79945372" class="uri">https://blog.csdn.net/u012111465/article/details/79945372</a></p>
@@ -96,15 +100,15 @@ Type  H &lt;return&gt;  for immediate help.
 <h3>5.1 kable</h3>
 <p>在knitr的众多功能中，对<a href="https://yihui.name/knitr/options/?version=1.1.463&amp;mode=server#plots">图片</a>的支持是相当丰富的。但是对表格似乎就不这么友好了，除了kable函数外一个也没有。尤其是转换为pdf以后，表格的样式变化很大，同时通过css修饰的样式也完全不能保留。</p>
 <p>html:</p>
-<div class="figure">
-<img src="figure/2018-12-25-Rmd2pdf/figure3.png" />
-
-</div>
+<p>
+<img src="/post/2018-12-25-Rmarkdown转中文pdf中遇到的问题_files/figure-html/figure3.png" width="672" />
+</p>
+<!-- ![](figure/2018-12-25-Rmd2pdf/figure3.png) -->
 <p>pdf:</p>
-<div class="figure">
-<img src="figure/2018-12-25-Rmd2pdf/figure4.png" />
-
-</div>
+<p>
+<img src="/post/2018-12-25-Rmarkdown转中文pdf中遇到的问题_files/figure-html/figure4.png" width="672" />
+</p>
+<!-- ![](figure/2018-12-25-Rmd2pdf/figure4.png) -->
 <p>一种解决方式是采用kableExtra对表格样式进行修饰，并且通过<code>knitr::is_html_output()</code>判断输出格式进行对应表格的绘制：</p>
 <pre class="r"><code>library(knitr)
 library(kableExtra)
@@ -131,15 +135,15 @@ if (is_html_output()) {
   ) 
 }</code></pre>
 <p>html:</p>
-<div class="figure">
-<img src="figure/2018-12-25-Rmd2pdf/figure5.png" />
-
-</div>
+<p>
+<img src="/post/2018-12-25-Rmarkdown转中文pdf中遇到的问题_files/figure-html/figure5.png" width="672" />
+</p>
+<!-- ![](figure/2018-12-25-Rmd2pdf/figure5.png) -->
 <p>pdf:</p>
-<div class="figure">
-<img src="figure/2018-12-25-Rmd2pdf/figure6.png" />
-
-</div>
+<p>
+<img src="/post/2018-12-25-Rmarkdown转中文pdf中遇到的问题_files/figure-html/figure6.png" width="672" />
+</p>
+<!-- ![](figure/2018-12-25-Rmd2pdf/figure6.png) -->
 </div>
 <div id="xtable" class="section level3">
 <h3>5.2 xtable</h3>
@@ -150,10 +154,10 @@ print(
   xtable(tb, caption = &#39;table 1.1 iris&#39;), type = &#39;html&#39;, 
   caption.placement = &#39;top&#39;
   ) </code></pre>
-<div class="figure">
-<img src="figure/2018-12-25-Rmd2pdf/figure7.png" />
-
-</div>
+<p>
+<img src="/post/2018-12-25-Rmarkdown转中文pdf中遇到的问题_files/figure-html/figure7.png" width="672" />
+</p>
+<!-- ![](figure/2018-12-25-Rmd2pdf/figure7.png) -->
 <blockquote>
 <p>参考链接 <a href="https://stackoverflow.com/questions/15258233/using-table-caption-on-r-markdown-file-using-knitr-to-use-in-pandoc-to-convert-t" class="uri">https://stackoverflow.com/questions/15258233/using-table-caption-on-r-markdown-file-using-knitr-to-use-in-pandoc-to-convert-t</a> <a href="https://stackoverflow.com/questions/21397407/knitr-r-markdown-and-xtable-xtable-tables-within-html-table" class="uri">https://stackoverflow.com/questions/21397407/knitr-r-markdown-and-xtable-xtable-tables-within-html-table</a></p>
 </blockquote>

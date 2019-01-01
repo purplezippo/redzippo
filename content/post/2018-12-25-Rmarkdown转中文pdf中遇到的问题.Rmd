@@ -87,7 +87,9 @@ head.tex中的内容如下，不懂latex必须承认是网上抄的，第一句�
 
 ## 3.绘图乱码
 文字解决了但是事儿没完，这是关于编码的第二个坑，就像下面这样，用ggplot2生成的图片中的中文字符全部变成了‘...’的形式。
-![figure1](figure/2018-12-25-Rmd2pdf/figure1.png)
+
+<p><img src="/post/2018-12-25-Rmarkdown转中文pdf中遇到的问题_files/figure-html/figure1.png" width="672" /></p>
+<!-- ![figure1](figure/2018-12-25-Rmd2pdf/figure1.png) -->
 
 怀疑过字体问题、tex设置问题、操作系统以及人生。。。最终通过仔细查阅官方文档以及stackoverflow最终发现图形设备需要额外指定，方式为在头文件中加入如下'dev'的配置，当然也可以设置为其它的图形设备。
 ```{r echo=TRUE, eval=FALSE}
@@ -98,7 +100,9 @@ output:
       includes:
         in_header: head.tex
 ```
-![](figure/2018-12-25-Rmd2pdf/figure2.png)
+
+<p><img src="/post/2018-12-25-Rmarkdown转中文pdf中遇到的问题_files/figure-html/figure2.png" width="672" /></p>
+<!-- ![](figure/2018-12-25-Rmd2pdf/figure2.png) -->
 
 其中图形设备可以替换为下列中的任何一个：bmp, postscript, pdf, png, svg, jpeg, pictex, tiff, win.metafile, cairo_pdf, cairo_ps, CairoJPEG, CairoPNG, CairoPS, CairoPDF, CairoSVG, CairoTIFF, Cairo_pdf, Cairo_png, Cairo_ps, Cairo_svg, tikz and a series of quartz devices including quartz_pdf, quartz_png, quartz_jpeg, quartz_tiff, quartz_gif, quartz_psd, quartz_bmp。
 过这个坑花了不少时间，然而这并不是结束。当然图片乱码的问题除此之外也可以使用showtext解决。
@@ -124,12 +128,14 @@ knitr::opts_chunk$set(fig.pos='H')
 
 html:
 
-![](figure/2018-12-25-Rmd2pdf/figure3.png)
+<p><img src="/post/2018-12-25-Rmarkdown转中文pdf中遇到的问题_files/figure-html/figure3.png" width="672" /></p>
+<!-- ![](figure/2018-12-25-Rmd2pdf/figure3.png) -->
 
 
 pdf:
 
-![](figure/2018-12-25-Rmd2pdf/figure4.png)
+<p><img src="/post/2018-12-25-Rmarkdown转中文pdf中遇到的问题_files/figure-html/figure4.png" width="672" /></p>
+<!-- ![](figure/2018-12-25-Rmd2pdf/figure4.png) -->
 
 一种解决方式是采用kableExtra对表格样式进行修饰，并且通过`knitr::is_html_output()`判断输出格式进行对应表格的绘制：
 ```{r echo=TRUE, eval=FALSE}
@@ -162,11 +168,13 @@ if (is_html_output()) {
 
 html:
 
-![](figure/2018-12-25-Rmd2pdf/figure5.png)
+<p><img src="/post/2018-12-25-Rmarkdown转中文pdf中遇到的问题_files/figure-html/figure5.png" width="672" /></p>
+<!-- ![](figure/2018-12-25-Rmd2pdf/figure5.png) -->
 
 pdf:
 
-![](figure/2018-12-25-Rmd2pdf/figure6.png)
+<p><img src="/post/2018-12-25-Rmarkdown转中文pdf中遇到的问题_files/figure-html/figure6.png" width="672" /></p>
+<!-- ![](figure/2018-12-25-Rmd2pdf/figure6.png) -->
 
 ### 5.2 xtable
 xtable是另一种选择。
@@ -179,7 +187,8 @@ print(
   ) 
 ```
 
-![](figure/2018-12-25-Rmd2pdf/figure7.png)
+<p><img src="/post/2018-12-25-Rmarkdown转中文pdf中遇到的问题_files/figure-html/figure7.png" width="672" /></p>
+<!-- ![](figure/2018-12-25-Rmd2pdf/figure7.png) -->
 
 >参考链接
 >https://stackoverflow.com/questions/15258233/using-table-caption-on-r-markdown-file-using-knitr-to-use-in-pandoc-to-convert-t
