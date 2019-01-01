@@ -2,11 +2,11 @@
 title: ggplot2绘制花朵
 author: 雨禾
 date: '2016-01-25'
-slug: ggplot2绘制花朵
 categories:
   - R
 tags:
   - plot
+slug: ggplot2绘制花朵
 ---
 
 闲暇时刻的小乐趣，只为自娱。

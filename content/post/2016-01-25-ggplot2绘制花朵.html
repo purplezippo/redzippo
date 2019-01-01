@@ -2,11 +2,11 @@
 title: ggplot2绘制花朵
 author: 雨禾
 date: '2016-01-25'
-slug: ggplot2绘制花朵
 categories:
   - R
 tags:
   - plot
+slug: ggplot2绘制花朵
 ---
 
 
@@ -43,9 +43,9 @@ test.sin &lt;- sin.gen(lambda = 30, ang = 10 * pi, ang.seg = 100, parts = 8)</co
 </div>
 <div class="section level2">
 <h2>1.2第一朵小花</h2>
-<pre class="r"><code>library(ggplot2)
-
-ggplot(data = test.sin) +
+<pre class="r"><code>library(ggplot2)</code></pre>
+<pre><code>## Warning: 程辑包&#39;ggplot2&#39;是用R版本3.4.4 来建造的</code></pre>
+<pre class="r"><code>ggplot(data = test.sin) +
   geom_point(aes(x = sin.x, y = sin.y),
     shape = 21, col = &quot;red&quot;,
     size = 45, alpha = .04
@@ -159,7 +159,6 @@ for (i in 1:36) {
   scale_x_continuous(&#39;&#39;, limits = c(-800, 800)) +
   scale_y_continuous(&#39;&#39;, limits = c(-700, 600)) +
   coord_fixed()</code></pre>
-<pre><code>## Warning: Removed 63 rows containing missing values (geom_point).</code></pre>
 <p><img src="/post/2016-01-25-ggplot2绘制花朵_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div class="section level2">
