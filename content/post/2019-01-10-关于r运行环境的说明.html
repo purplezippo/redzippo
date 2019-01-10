@@ -129,19 +129,33 @@ $(document).ready(function () {
 </div>
 
 
-<p><strong>系统环境说明</strong>：linux <strong>详细信息参考</strong>：<code>?Startup()</code> ## 1 环境变量 ### 1.1 安装路径 R_HOME地址是定义在启动文件<code>/usr/bin/R</code>中的，因此不同于一般的环境变量设置（通过在profile文件内设置<code>export R_HOME= ...</code>，这是没有用的），要修改R_HOME只能在这些初始化文件内修改（下文中列举）。一个R session一旦运行，就只能通过如下命令查看R_HOME。获取当前R session 的R_HOME地址，如下两个命令都可以。</p>
+<p><strong>系统环境说明</strong>：linux <strong>详细信息参考</strong>：<code>?Startup()</code></p>
+<div class="section level2">
+<h2>1 环境变量</h2>
+<div class="section level3">
+<h3>1.1 安装路径</h3>
+<p>R_HOME地址是定义在启动文件<code>/usr/bin/R</code>中的，因此不同于一般的环境变量设置（通过在profile文件内设置<code>export R_HOME= ...</code>，这是没有用的），要修改R_HOME只能在这些初始化文件内修改（下文中列举）。一个R session一旦运行，就只能通过如下命令查看R_HOME。获取当前R session 的R_HOME地址，如下两个命令都可以。</p>
 <pre class="r"><code>R.home(component = 'home')
 Sys.getenv('R_HOME')</code></pre>
 <p>同样级别的环境变量还有：‘R_SHARE_DIR’, ‘R_INCLUDE_DIR’以及‘R_DOC_DIR’。</p>
+</div>
 <div class="section level3">
 <h3>1.2 包路径</h3>
 <p>在一堆应用级别的环境变量中，大概只有这个环境变量是有修改的必要的。 - 包的存放路径，‘R_LIBS_SITE’(系统级包目录), ‘R_LIBS_USER’（用户级包目录）</p>
+</div>
 </div>
 <div class="section level2">
 <h2>2 相关文件</h2>
 <div class="section level3">
 <h3>2.1 读取过程</h3>
-<p>在R的启动过程中，首先执行的是设置环境变量的环境文件，其中包含的是各种环境变量的设置；其次执行的是配置文件，其中包含的是R代码，用于设置各种预先执行的R命令。所有文件执行的顺序为： 1. ‘R_HOME/etc/Renviron’ 1. 如果没有设置’R_ENVIRON’，则执行’R_HOME/etc/Renviron.site’(命令行<code>--no-environ</code>忽略此启动文件) 2. 如果没有设置’R_ENVIRON_USER’，则执行’~/.Renviron’(命令行<code>--no-environ</code>忽略此启动文件) 3. 如果没有设置’R_PROFILE’，则执行’R_HOME/etc/Rprofile.site’(命令行<code>--no-site-files</code>忽略此启动文件) 4. 如果没有设置’R_PROFILE_USER’，则执行’~/.Rprofile’(命令行<code>--no-init-file</code>忽略此启动文件)</p>
+<p>在R的启动过程中，首先执行的是设置环境变量的环境文件，其中包含的是各种环境变量的设置；其次执行的是配置文件，其中包含的是R代码，用于设置各种预先执行的R命令。所有文件执行的顺序为：</p>
+<ol style="list-style-type: decimal">
+<li>‘R_HOME/etc/Renviron’</li>
+<li>如果没有设置’R_ENVIRON’，则执行’R_HOME/etc/Renviron.site’(命令行<code>--no-environ</code>忽略此启动文件)</li>
+<li>如果没有设置’R_ENVIRON_USER’，则执行’~/.Renviron’(命令行<code>--no-environ</code>忽略此启动文件)</li>
+<li>如果没有设置’R_PROFILE’，则执行’R_HOME/etc/Rprofile.site’(命令行<code>--no-site-files</code>忽略此启动文件)</li>
+<li>如果没有设置’R_PROFILE_USER’，则执行’~/.Rprofile’(命令行<code>--no-init-file</code>忽略此启动文件)</li>
+</ol>
 </div>
 <div class="section level3">
 <h3>2.2 配置说明</h3>
