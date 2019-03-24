@@ -42,7 +42,7 @@ MCMC,也称为马尔科夫链蒙特卡洛(Markov Chain Monte Carlo)方法，是�
 
 <!-- </div> -->
 
-<p><img src="/post/2019-03-12mcmc方法解析_files/figure-html/img1.png" width="672" /></p>
+<p><img src="/post/2019-03-12-mcmc方法解析_files/figure-html/img1.png" width="672" /></p>
 
 > 如何手工获取随机数？
 
